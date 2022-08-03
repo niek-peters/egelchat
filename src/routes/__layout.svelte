@@ -2,6 +2,7 @@
 	import '../tailwind.css';
 	import Header from '../components/header.svelte';
 	import Card from '../components/card.svelte';
+	import Chat from '../components/chat.svelte';
 	import Menu from '../components/menu.svelte';
 </script>
 
@@ -10,9 +11,13 @@
 	<Header />
 	<div class="flex w-full justify-center  -mt-16">
 		<Card>
-			<Menu />
+			<Menu>
+				<slot />
+			</Menu>
 		</Card>
-		<slot />
+		<Card>
+			<Chat />
+		</Card>
 	</div>
 </div>
 
