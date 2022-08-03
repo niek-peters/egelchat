@@ -1,12 +1,19 @@
 <script>
 	import '../tailwind.css';
 	import Header from '../components/header.svelte';
+	import Card from '../components/card.svelte';
+	import Menu from '../components/menu.svelte';
 </script>
 
 <div class="wrapper">
 	<div class="bg absolute w-full h-full bg-no-repeat bg-center bg-cover -z-10" />
 	<Header />
-	<slot />
+	<div class="flex w-full justify-center  -mt-16">
+		<Card>
+			<Menu />
+		</Card>
+		<slot />
+	</div>
 </div>
 
 <style>

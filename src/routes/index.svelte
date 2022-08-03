@@ -3,7 +3,7 @@
 	import Chat from '../components/chat.svelte';
 </script>
 
-<div class="flex flex-col items-center -mt-16">
+<div class="flex flex-col items-center">
 	<Card>
 		<Chat />
 	</Card>

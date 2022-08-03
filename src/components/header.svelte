@@ -13,7 +13,7 @@
 			<Fa icon={faGithub} class="icon text-5xl text-white" />
 		</a>
 	</div>
-	<div class="flex flex-row items-center justify-between titlebar p-2 h-20">
+	<div class="flex flex-row items-center justify-between w-full p-2 h-20">
 		<h1 class="text-4xl font-semibold">Egel Chat</h1>
 	</div>
 </header>
@@ -22,6 +22,6 @@
 	.logo {
 		height: 8rem;
 		width: 8rem;
-		background-image: -webkit-linear-gradient(-45deg, black 50%, transparent 51%);
+		background-image: -webkit-linear-gradient(-43.5deg, black 50%, transparent 51%);
 	}
 </style>

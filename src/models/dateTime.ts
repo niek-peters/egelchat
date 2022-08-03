@@ -10,10 +10,10 @@ export default function dateToString(date: Date): string {
 	} else if (now.toDateString() === yesterday.toDateString()) {
 		output += 'Yesterday ';
 	} else {
-		output += date.toDateString() + ' ';
+		output += date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear() + ' ';
 	}
 
-	output += 'at ' + date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+	output += 'at ' + date.getHours() + ':' + date.getMinutes().toString().padStart(2, '0');
 
 	return output;
 }
