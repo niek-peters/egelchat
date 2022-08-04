@@ -3,22 +3,12 @@
 	import You from '../components/you.svelte';
 	import LoginSelect from '../components/loginSelect.svelte';
 
-	import type User from '../models/user';
-
-	// TO DO: Get current user
-
-	// let user: User = {
-	// 	uuid: '1',
-	// 	name: 'John Doe',
-	// 	pf_pic: 'https://i.pravatar.cc/300'
-	// };
-
-	let user: User | undefined = undefined;
+	import { user } from '../stores/user';
 </script>
 
-{#if user}
+{#if $user}
 	<ChatList />
-	<You {user} />
+	<You user={$user} />
 {:else}
 	<LoginSelect />
 {/if}

@@ -6,21 +6,24 @@
 	import type User from '../models/user';
 	import type MessageType from '../models/message';
 	import { messages, addMessage } from '../stores/messages';
+	import { user } from '../stores/user';
 
 	// TO DO: Get current user
 
-	let user: User = {
-		uuid: '1',
-		name: 'John Doe',
-		pf_pic: 'https://i.pravatar.cc/300'
-	};
+	// let user: User = {
+	// 	uuid: '1',
+	// 	name: 'John Doe',
+	// 	email: 'jarvis@gmail.com',
+	// 	pf_pic: 'https://i.pravatar.cc/300'
+	// };
 
 	function createMessage(): void {
 		if (!text) return;
+		if (!$user) return;
 
 		const message: MessageType = {
 			uuid: '3',
-			sender_uuid: user.uuid,
+			sender_uuid: $user.uuid,
 			content: text,
 			sent_at: new Date()
 		};
@@ -50,7 +53,7 @@
 <article class="flex flex-col items-center">
 	<div class="messages w-full overflow-y-auto">
 		{#each $messages as message}
-			<Message {user} {message} />
+			<Message user={$user} {message} />
 		{/each}
 	</div>
 	<form class="flex h-20 w-full mt-auto" on:submit|preventDefault={createMessage}>

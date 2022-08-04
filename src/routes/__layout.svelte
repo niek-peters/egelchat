@@ -4,6 +4,21 @@
 	import Card from '../components/card.svelte';
 	import Chat from '../components/chat.svelte';
 	import Menu from '../components/menu.svelte';
+
+	import { onMount } from 'svelte';
+	import { user, setUserFromJWT } from '../stores/user';
+
+	let loaded = false;
+
+	// Log the user in if there is an auth token in localStorage
+	onMount(() => {
+		if ($user) return;
+		const token = localStorage.getItem('auth-token');
+		if (token) {
+			setUserFromJWT(token);
+		}
+		loaded = true;
+	});
 </script>
 
 <div class="wrapper">
@@ -12,7 +27,9 @@
 	<div class="flex w-full justify-center  -mt-16">
 		<Card>
 			<Menu>
-				<slot />
+				{#if $user || loaded}
+					<slot />
+				{/if}
 			</Menu>
 		</Card>
 		<Card>
