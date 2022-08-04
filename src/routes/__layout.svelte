@@ -4,14 +4,18 @@
 	import Card from '../components/card.svelte';
 	import Chat from '../components/chat.svelte';
 	import Menu from '../components/menu.svelte';
+	import { io } from 'socket.io-client';
 
 	import { onMount } from 'svelte';
 	import { user, setUserFromJWT } from '../stores/user';
 
 	let loaded = false;
 
-	// Log the user in if there is an auth token in localStorage
 	onMount(() => {
+		// Connect to the socket.io server
+		io('http://127.0.0.1:3000');
+
+		// Log the user in if there is an auth token in localStorage
 		if ($user) return;
 		const token = localStorage.getItem('auth-token');
 		if (token) {

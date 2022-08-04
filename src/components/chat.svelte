@@ -48,17 +48,25 @@
 
 	// Getting the chat from the egelchat-api
 	async function getChat(uuid: string) {
-		const response = await fetch(`http://127.0.0.1:3000/api/chats/${uuid}`);
-		const data = await response.json();
-		chat = data;
+		try {
+			const response = await fetch(`http://127.0.0.1:3000/api/chats/${uuid}`);
+			const data = await response.json();
+			chat = data;
+		} catch (er) {
+			console.error(er);
+		}
 	}
 	getChat(defaultChatUUID);
 
 	// Getting the message for a chat from the egelchat-api
 	async function getMessages(chat_uuid: string) {
-		const response = await fetch(`http://127.0.0.1:3000/api/messages/${chat_uuid}`);
-		const data = await response.json();
-		fetchedMessages = data;
+		try {
+			const response = await fetch(`http://127.0.0.1:3000/api/messages/${chat_uuid}`);
+			const data = await response.json();
+			fetchedMessages = data;
+		} catch (er) {
+			console.error(er);
+		}
 	}
 	getMessages(defaultChatUUID);
 </script>

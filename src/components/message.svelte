@@ -12,9 +12,13 @@
 
 	// Getting the message sender from the egelchat-api
 	async function getSender(sender_id: string) {
-		const response = await fetch(`http://127.0.0.1:3000/api/users/${sender_id}`);
-		const data = await response.json();
-		sender = data;
+		try {
+			const response = await fetch(`http://127.0.0.1:3000/api/users/${sender_id}`);
+			const data = await response.json();
+			sender = data;
+		} catch (er) {
+			console.error(er);
+		}
 	}
 	getSender(message.sender_uuid);
 </script>
