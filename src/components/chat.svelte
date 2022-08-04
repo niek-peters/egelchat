@@ -67,7 +67,7 @@
 	{#if chat}
 		{chat.name}
 	{:else}
-		"General"
+		General
 	{/if}
 </h1>
 <article class="flex flex-col items-center">
@@ -77,20 +77,20 @@
 				<Message {message} />
 			{/each}
 		</div>
-		<form class="flex h-20 w-full mt-auto" on:submit|preventDefault={createMessage}>
-			<!-- svelte-ignore a11y-autofocus -->
-			<input
-				class="flex-grow p-6 text-2xl outline-none border-transparent focus:border-gray-400 border-2 rounded-bl-md transition"
-				type="text"
-				placeholder="Start typing..."
-				bind:value={text}
-				autofocus
-			/>
-			<button class="flex items-center justify-center w-20 bg-blue-400 hover:bg-blue-500 transition"
-				><Fa icon={faPaperPlane} class="text-3xl text-white" /></button
-			>
-		</form>
 	{/if}
+	<form class="flex h-20 w-full mt-auto" on:submit|preventDefault={createMessage}>
+		<!-- svelte-ignore a11y-autofocus -->
+		<input
+			class="flex-grow p-6 text-2xl outline-none border-transparent focus:border-gray-400 border-2 rounded-bl-md transition"
+			type="text"
+			placeholder="Start typing..."
+			bind:value={text}
+			autofocus
+		/>
+		<button class="flex items-center justify-center w-20 bg-blue-400 hover:bg-blue-500 transition"
+			><Fa icon={faPaperPlane} class="text-3xl text-white" /></button
+		>
+	</form>
 </article>
 
 <style lang="scss">
