@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { beforeUpdate, afterUpdate } from 'svelte';
 	import Message from './message.svelte';
 	import Fa from 'svelte-fa';
 	import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +15,21 @@
 	});
 
 	const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
+
+	let text = '';
+	let scrollDiv: HTMLDivElement;
+	let autoscroll: boolean;
+
+	beforeUpdate(() => {
+		autoscroll =
+			scrollDiv && scrollDiv.offsetHeight + scrollDiv.scrollTop > scrollDiv.scrollHeight - 20;
+	});
+
+	afterUpdate(() => {
+		console.log('Autoscroll', autoscroll);
+		console.log('Scroll height', scrollDiv.scrollHeight);
+		if (autoscroll) scrollDiv.scrollTo(0, scrollDiv.scrollHeight);
+	});
 
 	function createMessage(): void {
 		if (!text) return;
@@ -35,25 +50,7 @@
 		text = '';
 	}
 
-	let scrollToBottom = () => {
-		return;
-	};
-
-	onMount(() => {
-		scrollToBottom = async () => {
-			console.log('Scroll');
-			await tick();
-			let elem = document.querySelector('.messages');
-			if (elem) elem.scrollTop = elem.scrollHeight;
-		};
-	});
-
-	$: $messages, scrollToBottom();
-
-	let text = '';
-
 	let chat: Chat | undefined = undefined;
-	// let fetchedMessages: MessageType | undefined = undefined;
 
 	// Getting the chat from the egelchat-api
 	async function getChat(uuid: string) {
@@ -66,18 +63,6 @@
 		}
 	}
 	getChat(defaultChatUUID);
-
-	// Getting the message for a chat from the egelchat-api
-	// async function getMessages(chat_uuid: string) {
-	// 	try {
-	// 		const response = await fetch(`http://127.0.0.1:3000/api/messages/${chat_uuid}`);
-	// 		const data = await response.json();
-	// 		fetchedMessages = data;
-	// 	} catch (er) {
-	// 		console.error(er);
-	// 	}
-	// }
-	// getMessages(defaultChatUUID);
 </script>
 
 <h1 class="text-5xl p-6 font-semibold w-full text-center bg-gray-400/20">
@@ -88,7 +73,7 @@
 	{/if}
 </h1>
 <article class="flex flex-col items-center">
-	<div class="messages w-full overflow-y-auto">
+	<div class="messages w-full overflow-y-auto" bind:this={scrollDiv}>
 		{#each $messages as message}
 			<Message {message} />
 		{/each}
