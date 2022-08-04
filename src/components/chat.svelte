@@ -20,14 +20,14 @@
 	let scrollDiv: HTMLDivElement;
 	let autoscroll: boolean;
 
+	// Get scrollheight before update, to determine if the user is scrolled to the bottom
 	beforeUpdate(() => {
 		autoscroll =
 			scrollDiv && scrollDiv.offsetHeight + scrollDiv.scrollTop > scrollDiv.scrollHeight - 20;
 	});
 
+	// Update the scrollheight when the chat updates, but only if the user is scrolled to the bottom
 	afterUpdate(() => {
-		console.log('Autoscroll', autoscroll);
-		console.log('Scroll height', scrollDiv.scrollHeight);
 		if (autoscroll) scrollDiv.scrollTo(0, scrollDiv.scrollHeight);
 	});
 
@@ -39,6 +39,7 @@
 			chat_uuid: defaultChatUUID,
 			sender_uuid: $user.uuid,
 			content: text,
+			// TO DO: Fix the timezone issue
 			sent_at: getMySQLDateTime()
 		};
 
