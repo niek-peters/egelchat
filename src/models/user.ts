@@ -1,21 +1,26 @@
 import * as jose from 'jose';
 
-type User = {
+export type User = {
 	uuid: string;
 	name: string;
 	email: string;
 	pf_pic?: string;
 };
 
-export default User;
+export type UserLogin = {
+	email: string;
+	password: string;
+};
 
-export type UserFull = {
-	uuid: string;
+export type UserDB = {
+	uuid: Buffer;
 	name: string;
 	email: string;
 	password: string;
 	pf_pic?: string;
 };
+
+export default User;
 
 export function userFromJWT(token: string): User {
 	const data = jose.decodeJwt(token);

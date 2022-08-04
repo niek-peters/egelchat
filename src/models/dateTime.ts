@@ -17,3 +17,7 @@ export default function dateToString(date: Date): string {
 
 	return output;
 }
+
+export function getMySQLDateTime(): string {
+	return new Date().toISOString().slice(0, 19).replace('T', ' ');
+}

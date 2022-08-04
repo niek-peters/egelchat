@@ -1,8 +1,27 @@
-type Message = {
-	uuid: string;
+export type Message = {
+	id: number;
+	chat_uuid: string;
 	sender_uuid: string;
 	content: string;
-	sent_at: Date;
+	// YYYY-MM-DD hh:mm:ss
+	sent_at: string;
+};
+
+export type MessageDB = {
+	chat_uuid: Buffer;
+	sender_uuid: Buffer;
+	content: string;
+	// YYYY-MM-DD hh:mm:ss
+	sent_at: string;
+};
+
+export type MessageDBRes = {
+	id: number;
+	chat_uuid: Buffer;
+	sender_uuid: Buffer;
+	content: string;
+	// YYYY-MM-DD hh:mm:ss
+	sent_at: string;
 };
 
 export default Message;
