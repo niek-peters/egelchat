@@ -1,5 +1,4 @@
 export type Message = {
-	id: number;
 	chat_uuid: string;
 	sender_uuid: string;
 	content: string;

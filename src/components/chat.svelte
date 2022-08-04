@@ -8,6 +8,11 @@
 	import { messages, addMessage } from '../stores/messages';
 	import { user } from '../stores/user';
 	import { getMySQLDateTime } from '../models/dateTime';
+	import socket from '../connection/socket';
+
+	socket.on('message', (message: MessageType) => {
+		addMessage(message);
+	});
 
 	const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
 
@@ -16,7 +21,6 @@
 		if (!$user) return;
 
 		const message: MessageType = {
-			id: 3,
 			chat_uuid: defaultChatUUID,
 			sender_uuid: $user.uuid,
 			content: text,
@@ -24,6 +28,10 @@
 		};
 
 		addMessage(message);
+
+		// Send it to all other clients in this room
+		socket.emit('message', message);
+
 		text = '';
 	}
 
@@ -33,6 +41,7 @@
 
 	onMount(() => {
 		scrollToBottom = async () => {
+			console.log('Scroll');
 			await tick();
 			let elem = document.querySelector('.messages');
 			if (elem) elem.scrollTop = elem.scrollHeight;
@@ -44,7 +53,7 @@
 	let text = '';
 
 	let chat: Chat | undefined = undefined;
-	let fetchedMessages: MessageType | undefined = undefined;
+	// let fetchedMessages: MessageType | undefined = undefined;
 
 	// Getting the chat from the egelchat-api
 	async function getChat(uuid: string) {
@@ -59,16 +68,16 @@
 	getChat(defaultChatUUID);
 
 	// Getting the message for a chat from the egelchat-api
-	async function getMessages(chat_uuid: string) {
-		try {
-			const response = await fetch(`http://127.0.0.1:3000/api/messages/${chat_uuid}`);
-			const data = await response.json();
-			fetchedMessages = data;
-		} catch (er) {
-			console.error(er);
-		}
-	}
-	getMessages(defaultChatUUID);
+	// async function getMessages(chat_uuid: string) {
+	// 	try {
+	// 		const response = await fetch(`http://127.0.0.1:3000/api/messages/${chat_uuid}`);
+	// 		const data = await response.json();
+	// 		fetchedMessages = data;
+	// 	} catch (er) {
+	// 		console.error(er);
+	// 	}
+	// }
+	// getMessages(defaultChatUUID);
 </script>
 
 <h1 class="text-5xl p-6 font-semibold w-full text-center bg-gray-400/20">
@@ -79,13 +88,11 @@
 	{/if}
 </h1>
 <article class="flex flex-col items-center">
-	{#if fetchedMessages}
-		<div class="messages w-full overflow-y-auto">
-			{#each $messages as message}
-				<Message {message} />
-			{/each}
-		</div>
-	{/if}
+	<div class="messages w-full overflow-y-auto">
+		{#each $messages as message}
+			<Message {message} />
+		{/each}
+	</div>
 	<form class="flex h-20 w-full mt-auto" on:submit|preventDefault={createMessage}>
 		<!-- svelte-ignore a11y-autofocus -->
 		<input

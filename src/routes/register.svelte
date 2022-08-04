@@ -2,7 +2,7 @@
 	import Fa from 'svelte-fa';
 	import { faBackward } from '@fortawesome/free-solid-svg-icons';
 	import { goto } from '$app/navigation';
-	import { setUserFromJWT } from '../stores/user';
+	import { login } from '../models/user';
 
 	let username = '';
 	let email = '';
@@ -26,20 +26,10 @@
 			if (response.status !== 200) throw new Error(await response.text());
 
 			// Reset all inputs and errors
-			username = '';
-			email = '';
-			password = '';
-			error = '';
+			username = email = password = error = '';
 
-			const token = response.headers.get('Authorization');
-
-			// Put the token in local storage
-			if (token) {
-				localStorage.setItem('auth-token', token);
-
-				// Put the user in the store
-				setUserFromJWT(token);
-			}
+			// Login
+			login(response.headers.get('Authorization'));
 
 			// Redirect to the homepage
 			goto('/');
