@@ -1,17 +1,23 @@
 <script lang="ts">
 	import Line from '../general/line.svelte';
 	import ChatButton from './chatButton.svelte';
+	import type { Chat } from '../../models/chat';
+
+	async function getChats() {
+		const result = await fetch('http://127.0.0.1:3000/api/chats');
+		const chats: Chat[] = await result.json();
+		return chats;
+	}
 </script>
 
 <div class="flex flex-col w-full p-4">
-	<h2 class="text-2xl font-semibold">Your Chats</h2>
+	<h2 class="text-2xl font-semibold">Chats</h2>
 	<Line />
 	<nav class="flex flex-col">
-		<ChatButton uuid={'2'} name={'Chat 1'} />
-		<ChatButton uuid={'3'} name={'Chat 2'} />
-		<ChatButton uuid={'4'} name={'Chat 3'} />
-		<ChatButton uuid={'5'} name={'Chat 4'} />
-		<ChatButton uuid={'6'} name={'Chat 5'} />
-		<ChatButton uuid={'7'} name={'Chat 6'} />
+		{#await getChats() then chats}
+			{#each chats as chat}
+				<ChatButton {chat} />
+			{/each}
+		{/await}
 	</nav>
 </div>

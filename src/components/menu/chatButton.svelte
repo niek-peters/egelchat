@@ -1,9 +1,9 @@
 <script lang="ts">
-	export let uuid = '';
-	export let name = '';
+	import type { Chat } from '../../models/chat';
+	export let chat: Chat;
 </script>
 
 <a
 	class="bg-gray-100/50 hover:bg-gray-100/100 p-2 m-1 transition rounded-md"
-	href={`https://www.minecraft.net/nl-nl/${uuid}`}>{name}</a
+	href={`/chats/${chat.uuid}`}>{chat.name}</a
 >

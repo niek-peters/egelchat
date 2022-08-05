@@ -10,7 +10,10 @@
 	export let chat: Chat;
 	export let chatMessages: Message[];
 
-	setMessages(chatMessages);
+	// Code to rerun when the props change
+	$: setMessages(chatMessages);
+
+	$: $messages, console.log($messages);
 
 	socket.on('message', (message: Message) => {
 		addMessage(message);

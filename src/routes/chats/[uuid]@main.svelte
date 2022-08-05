@@ -2,7 +2,6 @@
 	import type { Chat as ChatType } from '../../models/chat';
 	import type { Message, MessageRes } from '../../models/message';
 	import type { Load } from '@sveltejs/kit';
-	import { setCurrentChat } from '../../stores/currentChat';
 
 	export const load: Load = async ({ params, fetch }) => {
 		try {
@@ -11,8 +10,6 @@
 			if (response.status !== 200) throw new Error(await response.text());
 
 			const chat: ChatType = await response.json();
-
-			setCurrentChat(chat);
 
 			response = await fetch(`http://127.0.0.1:3000/api/messages/${chat.uuid}`);
 
@@ -50,9 +47,12 @@
 
 <script lang="ts">
 	import Chat from '../../components/main/chat.svelte';
+	import { setCurrentChat } from '../../stores/currentChat';
 
 	export let chat: ChatType;
 	export let chatMessages: Message[];
+
+	setCurrentChat(chat);
 </script>
 
 <Chat {chat} {chatMessages} />

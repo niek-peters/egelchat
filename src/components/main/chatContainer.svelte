@@ -9,14 +9,13 @@
 	import socket from '../../sockets/socket';
 
 	let text = '';
-	const chatUUID = $currentChat.uuid;
 
 	function createMessage(): void {
 		if (!text) return;
 		if (!$user) return;
 
 		const message: MessageType = {
-			chat_uuid: chatUUID,
+			chat_uuid: $currentChat.uuid,
 			sender_uuid: $user.uuid,
 			content: text,
 			// TO DO: Fix the timezone issue
