@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { beforeUpdate, afterUpdate } from 'svelte';
 	import Message from './message.svelte';
-	import type MessageType from '../models/message';
-	import type Chat from '../models/chat';
-	import { messages, addMessage } from '../stores/messages';
-	import socket from '../sockets/socket';
+	import type MessageType from '../../models/message';
+	import type Chat from '../../models/chat';
+	import { messages, addMessage } from '../../stores/messages';
+	import socket from '../../sockets/socket';
 	import ChatContainer from './chatContainer.svelte';
 
 	socket.on('message', (message: MessageType) => {

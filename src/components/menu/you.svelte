@@ -2,7 +2,7 @@
 	import Fa from 'svelte-fa';
 	import { faUser, faGear } from '@fortawesome/free-solid-svg-icons';
 
-	import type User from '../models/user';
+	import type User from '../../models/user';
 	export let user: User;
 </script>
 

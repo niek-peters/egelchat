@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
 	import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-	import { addMessage } from '../stores/messages';
-	import type MessageType from '../models/message';
-	import { user } from '../stores/user';
-	import { getMySQLDateTime } from '../models/dateTime';
-	import socket from '../sockets/socket';
+	import { addMessage } from '../../stores/messages';
+	import type MessageType from '../../models/message';
+	import { user } from '../../stores/user';
+	import { getMySQLDateTime } from '../../models/dateTime';
+	import socket from '../../sockets/socket';
 
 	let text = '';
 	const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';

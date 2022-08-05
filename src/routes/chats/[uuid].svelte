@@ -34,7 +34,7 @@
 <script lang="ts">
 	import { messages, setMessages, addMessage } from '../../stores/messages';
 	import ChatContainer from '../../components/chatContainer.svelte';
-	import MessageEl from '../../components/message.svelte';
+	import MessageEl from '../../components/main/message.svelte';
 	import { beforeUpdate, afterUpdate } from 'svelte';
 	import socket from '../../sockets/socket';
 

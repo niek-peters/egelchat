@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Line from './line.svelte';
+	import Line from '../general/line.svelte';
 	import ChatButton from './chatButton.svelte';
 </script>
 

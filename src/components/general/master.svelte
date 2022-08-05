@@ -1,9 +1,9 @@
 <script>
-	import '../tailwind.css';
-	import Header from '../components/header.svelte';
+	import '../../tailwind.css';
+	import Header from './header.svelte';
 
 	import { onMount } from 'svelte';
-	import { login } from '../models/user';
+	import { login } from '../../models/user';
 
 	onMount(() => {
 		login(localStorage.getItem('auth-token'));

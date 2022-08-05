@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
 	import { faUser } from '@fortawesome/free-solid-svg-icons';
-	import dateToString from '../models/dateTime';
-	import type { MessageFull } from '../models/message';
-	import { user } from '../stores/user';
+	import dateToString from '../../models/dateTime';
+	import type { MessageFull } from '../../models/message';
+	import { user } from '../../stores/user';
 
 	export let message: MessageFull;
 </script>
