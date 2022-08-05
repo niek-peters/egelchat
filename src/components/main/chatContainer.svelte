@@ -4,18 +4,19 @@
 	import { addMessage } from '../../stores/messages';
 	import type MessageType from '../../models/message';
 	import { user } from '../../stores/user';
+	import { currentChat } from '../../stores/currentChat';
 	import { getMySQLDateTime } from '../../models/dateTime';
 	import socket from '../../sockets/socket';
 
 	let text = '';
-	const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
+	const chatUUID = $currentChat.uuid;
 
 	function createMessage(): void {
 		if (!text) return;
 		if (!$user) return;
 
 		const message: MessageType = {
-			chat_uuid: defaultChatUUID,
+			chat_uuid: chatUUID,
 			sender_uuid: $user.uuid,
 			content: text,
 			// TO DO: Fix the timezone issue

@@ -12,8 +12,6 @@
 				<slot />
 			</Menu>
 		</div>
-		<div slot="main">
-			<Chat uuid="acdf90a0-1408-11ed-8f13-436d0cf1e378" />
-		</div>
+		<div slot="main" />
 	</MainPanels>
 </Master>

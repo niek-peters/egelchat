@@ -11,6 +11,12 @@ const config = {
 		})
 	],
 
+	vitePlugin: {
+		experimental: {
+			useVitePreprocess: true
+		}
+	},
+
 	kit: {
 		adapter: adapter()
 	}

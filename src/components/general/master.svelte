@@ -20,6 +20,6 @@
 
 <style>
 	.bg {
-		background-image: url('./bg-1.svg');
+		background-image: url('/bg-1.svg');
 	}
 </style>

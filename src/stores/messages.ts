@@ -5,6 +5,7 @@ export const messages = writable<MessageFull[]>([]);
 
 export async function setMessages(newMessages: Message[]) {
 	try {
+		if (!newMessages.length) return clearMessages();
 		const newMessagesFull = await Promise.all(
 			newMessages.map(async (message) => {
 				const fullMessage = await getFullMessage(message);

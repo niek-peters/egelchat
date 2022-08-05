@@ -58,14 +58,14 @@ export async function login(token: string | null) {
 		setUser(user);
 
 		// Fetch all messages from the database
-		const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
-		const result = await fetch(`http://127.0.0.1:3000/api/messages/${defaultChatUUID}`);
-		const messages = await result.json();
+		// const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
+		// const result = await fetch(`http://127.0.0.1:3000/api/messages/${defaultChatUUID}`);
+		// const messages = await result.json();
 
-		if (!messages.length) throw new Error('No messages found');
+		// if (!messages.length) throw new Error('No messages found');
 
-		// Put the messages in the store
-		setMessages(messages);
+		// // Put the messages in the store
+		// setMessages(messages);
 	} catch (er) {
 		if (er instanceof Error) console.error(er.message);
 	}

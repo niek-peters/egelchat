@@ -1,20 +1,23 @@
 <script lang="ts">
+	import { messages, setMessages, addMessage } from '../../stores/messages';
+	import type { Chat } from '../../models/chat';
+	import type { Message } from '../../models/message';
+	import ChatContainer from '../../components/main/chatContainer.svelte';
+	import MessageEl from '../../components/main/message.svelte';
 	import { beforeUpdate, afterUpdate } from 'svelte';
-	import Message from './message.svelte';
-	import type MessageType from '../../models/message';
-	import type Chat from '../../models/chat';
-	import { messages, addMessage } from '../../stores/messages';
 	import socket from '../../sockets/socket';
-	import ChatContainer from './chatContainer.svelte';
 
-	socket.on('message', (message: MessageType) => {
+	export let chat: Chat;
+	export let chatMessages: Message[];
+
+	setMessages(chatMessages);
+
+	socket.on('message', (message: Message) => {
 		addMessage(message);
 	});
 
 	let scrollDiv: HTMLDivElement;
 	let autoscroll: boolean;
-	let chat: Chat | undefined = undefined;
-	export let uuid: string = '';
 
 	// Get scrollheight before update, to determine if the user is scrolled to the bottom
 	beforeUpdate(() => {
@@ -24,21 +27,8 @@
 
 	// Update the scrollheight when the chat updates, but only if the user is scrolled to the bottom
 	afterUpdate(() => {
-		console.log(scrollDiv.scrollTop);
 		if (autoscroll) scrollDiv.scrollTo(0, scrollDiv.scrollHeight);
 	});
-
-	// Getting the chat from the egelchat-api
-	async function getChat(uuid: string) {
-		try {
-			const response = await fetch(`http://127.0.0.1:3000/api/chats/${uuid}`);
-			const data = await response.json();
-			chat = data;
-		} catch (er) {
-			console.error(er);
-		}
-	}
-	getChat(uuid);
 </script>
 
 <ChatContainer>
@@ -51,7 +41,7 @@
 	</h1>
 	<div slot="messages" class="messages w-full overflow-y-auto" bind:this={scrollDiv}>
 		{#each $messages as message}
-			<Message {message} />
+			<MessageEl {message} />
 		{/each}
 	</div>
 </ChatContainer>
