@@ -1,6 +1,6 @@
 import * as jose from 'jose';
 import { setUser } from '../stores/user';
-import socket from '../connection/socket';
+import socket from '../sockets/socket';
 import { setMessages } from '../stores/messages';
 
 export type User = {
