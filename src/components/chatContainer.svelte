@@ -3,14 +3,12 @@
 	import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 	import { addMessage } from '../stores/messages';
 	import type MessageType from '../models/message';
-	import type Chat from '../models/chat';
 	import { user } from '../stores/user';
 	import { getMySQLDateTime } from '../models/dateTime';
 	import socket from '../sockets/socket';
 
 	let text = '';
 	const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
-	let chat: Chat | undefined = undefined;
 
 	function createMessage(): void {
 		if (!text) return;
@@ -31,29 +29,11 @@
 
 		text = '';
 	}
-
-	// Getting the chat from the egelchat-api
-	async function getChat(uuid: string) {
-		try {
-			const response = await fetch(`http://127.0.0.1:3000/api/chats/${uuid}`);
-			const data = await response.json();
-			chat = data;
-		} catch (er) {
-			console.error(er);
-		}
-	}
-	getChat(defaultChatUUID);
 </script>
 
-<h1 class="text-5xl p-6 font-semibold w-full text-center bg-gray-400/20">
-	{#if chat}
-		{chat.name}
-	{:else}
-		General
-	{/if}
-</h1>
+<slot name="chat-header" />
 <article class="flex flex-col items-center">
-	<slot />
+	<slot name="messages" />
 	<form class="flex h-20 w-full mt-auto" on:submit|preventDefault={createMessage}>
 		<!-- svelte-ignore a11y-autofocus -->
 		<input

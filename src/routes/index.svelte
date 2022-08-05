@@ -4,7 +4,6 @@
 	import You from '../components/you.svelte';
 	import LoginSelect from '../components/loginSelect.svelte';
 	import MainPanels from '../components/mainPanels.svelte';
-	import ChatContainer from '../components/chatContainer.svelte';
 	import Menu from '../components/menu.svelte';
 	import Chat from '../components/chat.svelte';
 
@@ -29,8 +28,6 @@
 		</Menu>
 	</div>
 	<div slot="main">
-		<ChatContainer>
-			<Chat />
-		</ChatContainer>
+		<Chat uuid="acdf90a0-1408-11ed-8f13-436d0cf1e378" />
 	</div>
 </MainPanels>

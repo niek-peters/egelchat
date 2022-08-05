@@ -24,10 +24,10 @@ export type MessageDB = {
 	sent_at: string;
 };
 
-export type MessageDBRes = {
+export type MessageRes = {
 	id: number;
-	chat_uuid: Buffer;
-	sender_uuid: Buffer;
+	chat_uuid: string;
+	sender_uuid: string;
 	content: string;
 	// YYYY-MM-DD hh:mm:ss
 	sent_at: string;
