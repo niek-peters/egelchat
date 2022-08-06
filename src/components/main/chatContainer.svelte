@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount, onDestroy } from 'svelte';
 	import Fa from 'svelte-fa';
 	import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 	import { addMessage } from '../../stores/messages';
@@ -30,6 +31,17 @@
 
 		text = '';
 	}
+
+	let inputEl: HTMLInputElement;
+
+	function focusInput() {
+		inputEl.focus();
+	}
+
+	// Auto detect user inputs and select the text input automatically
+	onMount(() => {
+		document.addEventListener('keypress', focusInput);
+	});
 </script>
 
 <slot name="chat-header" />
@@ -42,7 +54,7 @@
 			type="text"
 			placeholder="Start typing..."
 			bind:value={text}
-			autofocus
+			bind:this={inputEl}
 			disabled={$currentChat === undefined}
 		/>
 		<button

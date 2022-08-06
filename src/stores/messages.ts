@@ -31,7 +31,13 @@ export async function addMessage(message: Message) {
 
 async function getFullMessage(message: Message): Promise<MessageFull | undefined> {
 	try {
-		const response = await fetch(`http://127.0.0.1:3000/api/users/${message.sender_uuid}`);
+		const token = localStorage.getItem('auth-token');
+
+		const response = await fetch(`http://127.0.0.1:3000/api/users/${message.sender_uuid}`, {
+			headers: {
+				Authorization: token as string
+			}
+		});
 		const data = await response.json();
 		const sender = data;
 

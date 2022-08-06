@@ -7,13 +7,23 @@
 		try {
 			const generalChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
 
-			let response = await fetch(`http://127.0.0.1:3000/api/chats/${generalChatUUID}`);
+			const token = localStorage.getItem('auth-token');
+
+			let response = await fetch(`http://127.0.0.1:3000/api/chats/${generalChatUUID}`, {
+				headers: {
+					Authorization: token as string
+				}
+			});
 
 			if (response.status !== 200) throw new Error(await response.text());
 
 			const chat: ChatType = await response.json();
 
-			response = await fetch(`http://127.0.0.1:3000/api/messages/${chat.uuid}`);
+			response = await fetch(`http://127.0.0.1:3000/api/messages/${chat.uuid}`, {
+				headers: {
+					Authorization: token as string
+				}
+			});
 
 			// If there aren't any messages, return an empty array for the messages
 			if (response.status !== 200)
