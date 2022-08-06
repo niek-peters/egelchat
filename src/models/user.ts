@@ -42,9 +42,9 @@ export async function login(token: string | null) {
 		socket.connect();
 
 		// Setup error reporting
-		socket.on('connect_error', (err) => {
-			// console.error(err);
-		});
+		// socket.on('connect_error', (err) => {
+		// 	// console.error(err);
+		// });
 
 		// Get the the user data from the token
 		const user: User = {

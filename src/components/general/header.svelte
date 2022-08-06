@@ -6,7 +6,7 @@
 <header class="flex w-full">
 	<div class="logo p-3.5">
 		<a
-			href="https://github.com/MrValk/uitest"
+			href="https://github.com/MrValk/egelchat"
 			target="_blank"
 			class="rounded-full flex w-fit hover:scale-105 transition"
 		>

@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class={`bg-blue-300 p-4 max-w-3xl rounded-xl m-4 ${
+	class={`bg-blue-300 p-4 w-fit max-w-3xl rounded-xl m-4 ${
 		$user && $user.uuid == message.sender_uuid ? 'rounded-tr-none ml-auto' : 'rounded-tl-none'
 	}`}
 >
@@ -24,7 +24,7 @@
 				<Fa icon={faUser} class="text-2xl" />
 			{/if}
 		</a>
-		<h3 class="text-xl">{message.sender_name}</h3>
+		<a href="https://www.minecraft.net/nl-nl" class="text-xl mr-4">{message.sender_name}</a>
 		<h2 class="ml-auto mr-2">{dateToString(new Date(message.sent_at))}</h2>
 	</header>
 	<p>
