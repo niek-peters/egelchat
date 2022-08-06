@@ -11,7 +11,7 @@
 	class="flex items-center w-full h-20 mt-auto bg-blue-400 hover:bg-blue-500 transition"
 >
 	<div
-		class="flex items-center justify-center rounded-full overflow-hidden bg-blue-400 mx-4 w-14 h-14"
+		class="flex items-center justify-center rounded-full overflow-hidden bg-blue-300 mx-4 w-14 h-14"
 	>
 		{#if user.pf_pic}
 			<img src={user.pf_pic} alt="pf pic" />

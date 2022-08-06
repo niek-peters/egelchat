@@ -2,8 +2,10 @@
 	import type { Chat as ChatType } from '../../models/chat';
 	import type { Message, MessageRes } from '../../models/message';
 	import type { Load } from '@sveltejs/kit';
+	import { browser } from '$app/env';
 
 	export const load: Load = async ({ params, fetch }) => {
+		if (!browser) return;
 		try {
 			const token = localStorage.getItem('auth-token');
 

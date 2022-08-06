@@ -26,7 +26,7 @@
 		{:else if status == 'locked'}
 			<Fa icon={faLock} class="text-9xl text-blue-400" />
 		{:else}
-			<SyncLoader size="10" color="#60a5fa" unit="rem" duration=".5s" />
+			<SyncLoader size="10" color="#60a5fa" unit="rem" duration=".8s" />
 		{/if}
 	</div>
 </ChatContainer>

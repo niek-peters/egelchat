@@ -2,8 +2,10 @@
 	import type { Chat as ChatType } from '../models/chat';
 	import type { Message, MessageRes } from '../models/message';
 	import type { Load } from '@sveltejs/kit';
+	import { browser } from '$app/env';
 
 	export const load: Load = async ({ fetch }) => {
+		if (!browser) return;
 		try {
 			const generalChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
 
