@@ -6,3 +6,7 @@ export const user = writable<User | undefined>();
 export function setUser(loggedInUser: User) {
 	user.update(() => loggedInUser);
 }
+
+export function resetUser() {
+	user.set(undefined);
+}

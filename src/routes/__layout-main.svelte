@@ -21,7 +21,7 @@
 	<MainPanels>
 		<div slot="menu">
 			<Menu>
-				{#if $user && loaded}
+				{#if $user}
 					<ChatList />
 					<You user={$user} />
 				{:else if loaded}

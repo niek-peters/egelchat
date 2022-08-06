@@ -11,11 +11,26 @@
 
 			const token = localStorage.getItem('auth-token');
 
+			if (!token || token === 'undefined')
+				return {
+					props: {
+						auth: false
+					}
+				};
+
 			let response = await fetch(`http://127.0.0.1:3000/api/chats/${generalChatUUID}`, {
 				headers: {
 					Authorization: token as string
 				}
 			});
+
+			if (response.status === 401) {
+				return {
+					props: {
+						auth: false
+					}
+				};
+			}
 
 			if (response.status !== 200) throw new Error(await response.text());
 
@@ -66,8 +81,9 @@
 
 	import { user } from '../stores/user';
 
-	export let chat: ChatType;
-	export let chatMessages: Message[];
+	export let auth: boolean | undefined = undefined;
+	export let chat: ChatType | undefined = undefined;
+	export let chatMessages: Message[] | undefined = undefined;
 
 	let loaded = false;
 
@@ -78,9 +94,9 @@
 
 {#if !loaded}
 	<ChatStatus />
-{:else if $user && chat}
+{:else if $user && chat && chatMessages}
 	<Chat {chat} {chatMessages} />
-{:else if chat}
+{:else if auth === false}
 	<ChatStatus status="locked" />
 {:else}
 	<ChatStatus status="disconnected" />

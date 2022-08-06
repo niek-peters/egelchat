@@ -14,7 +14,7 @@
 		</a>
 	</div>
 	<div class="flex flex-row items-center justify-between w-full p-2 h-20">
-		<h1 class="text-4xl font-semibold">Egel Chat</h1>
+		<a href="/"><h1 class="text-4xl font-semibold">Egel Chat</h1></a>
 	</div>
 </header>
 

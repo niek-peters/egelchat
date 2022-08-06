@@ -7,7 +7,7 @@
 </script>
 
 <a
-	href="https://www.minecraft.net/nl-nl"
+	href="/settings"
 	class="flex items-center w-full h-20 mt-auto bg-blue-400 hover:bg-blue-500 transition"
 >
 	<div

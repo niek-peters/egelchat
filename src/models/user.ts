@@ -1,7 +1,9 @@
 import * as jose from 'jose';
-import { setUser } from '../stores/user';
+import { setUser, resetUser } from '../stores/user';
+import { resetSettingsNav } from '../stores/settingsNav';
 import socket from '../connections/socket';
-import { setMessages } from '../stores/messages';
+import { browser } from '$app/env';
+import { goto } from '$app/navigation';
 
 export type User = {
 	uuid: string;
@@ -27,6 +29,8 @@ export default User;
 
 export async function login(token: string | null) {
 	try {
+		if (!browser) return;
+
 		// Check if a token was provided
 		if (!token || token === 'undefined') return;
 
@@ -34,8 +38,8 @@ export async function login(token: string | null) {
 		const { uuid, name, email, pf_pic } = jose.decodeJwt(token);
 
 		// If we get here, it means it is a valid token
-		// Put the token in localStorage if available
-		if (localStorage) localStorage.setItem('auth-token', token);
+		// Put the token in localStorage
+		localStorage.setItem('auth-token', token);
 
 		// Get the the user data from the token
 		const user: User = {
@@ -51,21 +55,28 @@ export async function login(token: string | null) {
 		// Put the token in the socket auth object and (re)connect
 		socket.auth = { jwt: token };
 		socket.connect();
+	} catch (er) {
+		if (er instanceof Error) console.error(er.message);
+	}
+}
 
-		// Setup error reporting
-		// socket.on('connect_error', (err) => {
-		// 	// console.error(err);
-		// });
+export function logout() {
+	try {
+		if (!browser) return;
 
-		// Fetch all messages from the database
-		// const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';
-		// const result = await fetch(`http://127.0.0.1:3000/api/messages/${defaultChatUUID}`);
-		// const messages = await result.json();
+		localStorage.setItem('auth-token', 'undefined');
 
-		// if (!messages.length) throw new Error('No messages found');
+		// Reset the user store
+		resetUser();
 
-		// // Put the messages in the store
-		// setMessages(messages);
+		// Reset the settingsNav store
+		resetSettingsNav();
+
+		// Disconnect from the socket
+		socket.disconnect();
+
+		// Redirect to the homepage
+		goto('/');
 	} catch (er) {
 		if (er instanceof Error) console.error(er.message);
 	}
