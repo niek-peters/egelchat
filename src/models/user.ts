@@ -43,7 +43,7 @@ export async function login(token: string | null) {
 
 		// Setup error reporting
 		socket.on('connect_error', (err) => {
-			console.error(err);
+			// console.error(err);
 		});
 
 		// Get the the user data from the token

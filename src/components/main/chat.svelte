@@ -5,18 +5,30 @@
 	import ChatContainer from '../../components/main/chatContainer.svelte';
 	import MessageEl from '../../components/main/message.svelte';
 	import { beforeUpdate, afterUpdate } from 'svelte';
+
 	import socket from '../../sockets/socket';
+	import { setCurrentChat } from '../../stores/currentChat';
+	import { user } from '../../stores/user';
 
 	export let chat: Chat;
 	export let chatMessages: Message[];
 
-	// Code to rerun when the props change
-	$: setMessages(chatMessages);
+	$: {
+		console.log(chat);
+		setCurrentChat(chat);
 
-	$: $messages, console.log($messages);
+		socket.emit('chat_join', chat.uuid);
 
+		// Code to rerun when the props change
+		setMessages(chatMessages);
+	}
+
+	socket.off('message');
 	socket.on('message', (message: Message) => {
-		addMessage(message);
+		if ($user && message.sender_uuid !== $user.uuid) {
+			console.log(message);
+			addMessage(message);
+		}
 	});
 
 	let scrollDiv: HTMLDivElement;

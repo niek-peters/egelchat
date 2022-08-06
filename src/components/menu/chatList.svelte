@@ -4,9 +4,13 @@
 	import type { Chat } from '../../models/chat';
 
 	async function getChats() {
-		const result = await fetch('http://127.0.0.1:3000/api/chats');
-		const chats: Chat[] = await result.json();
-		return chats;
+		try {
+			const result = await fetch('http://127.0.0.1:3000/api/chats');
+			const chats: Chat[] = await result.json();
+			return chats;
+		} catch (er) {
+			console.error(er);
+		}
 	}
 </script>
 
@@ -15,9 +19,11 @@
 	<Line />
 	<nav class="flex flex-col">
 		{#await getChats() then chats}
-			{#each chats as chat}
-				<ChatButton {chat} />
-			{/each}
+			{#if chats}
+				{#each chats as chat}
+					<ChatButton {chat} />
+				{/each}
+			{/if}
 		{/await}
 	</nav>
 </div>

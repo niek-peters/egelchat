@@ -47,12 +47,8 @@
 
 <script lang="ts">
 	import Chat from '../../components/main/chat.svelte';
-	import { setCurrentChat } from '../../stores/currentChat';
-
 	export let chat: ChatType;
 	export let chatMessages: Message[];
-
-	setCurrentChat(chat);
 </script>
 
 <Chat {chat} {chatMessages} />
