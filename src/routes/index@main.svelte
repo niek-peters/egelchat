@@ -49,12 +49,27 @@
 
 <script lang="ts">
 	import Chat from '../components/main/chat.svelte';
-	import { setCurrentChat } from '../stores/currentChat';
+	import ChatStatus from '../components/main/chatStatus.svelte';
+	import { onMount } from 'svelte';
+
+	import { user } from '../stores/user';
 
 	export let chat: ChatType;
 	export let chatMessages: Message[];
 
-	setCurrentChat(chat);
+	let loaded = false;
+
+	onMount(() => {
+		loaded = true;
+	});
 </script>
 
-<Chat {chat} {chatMessages} />
+{#if !loaded}
+	<ChatStatus />
+{:else if $user && chat}
+	<Chat {chat} {chatMessages} />
+{:else if chat}
+	<ChatStatus status="locked" />
+{:else}
+	<ChatStatus status="disconnected" />
+{/if}

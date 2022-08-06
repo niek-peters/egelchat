@@ -6,13 +6,14 @@
 	import { user } from '../../stores/user';
 	import { currentChat } from '../../stores/currentChat';
 	import { getMySQLDateTime } from '../../models/dateTime';
-	import socket from '../../sockets/socket';
+	import socket from '../../connections/socket';
 
 	let text = '';
 
 	function createMessage(): void {
 		if (!text) return;
 		if (!$user) return;
+		if (!$currentChat) return;
 
 		const message: MessageType = {
 			chat_uuid: $currentChat.uuid,
@@ -42,8 +43,13 @@
 			placeholder="Start typing..."
 			bind:value={text}
 			autofocus
+			disabled={$currentChat === undefined}
 		/>
-		<button class="flex items-center justify-center w-20 bg-blue-400 hover:bg-blue-500 transition"
+		<button
+			class={`flex items-center justify-center w-20 bg-blue-400  transition ${
+				$currentChat === undefined ? 'opacity-50' : 'hover:bg-blue-500'
+			}`}
+			disabled={$currentChat === undefined}
 			><Fa icon={faPaperPlane} class="text-3xl text-white" /></button
 		>
 	</form>

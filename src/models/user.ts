@@ -1,6 +1,6 @@
 import * as jose from 'jose';
 import { setUser } from '../stores/user';
-import socket from '../sockets/socket';
+import socket from '../connections/socket';
 import { setMessages } from '../stores/messages';
 
 export type User = {
@@ -37,15 +37,6 @@ export async function login(token: string | null) {
 		// Put the token in localStorage if available
 		if (localStorage) localStorage.setItem('auth-token', token);
 
-		// Put the token in the socket auth object and (re)connect
-		socket.auth = { jwt: token };
-		socket.connect();
-
-		// Setup error reporting
-		// socket.on('connect_error', (err) => {
-		// 	// console.error(err);
-		// });
-
 		// Get the the user data from the token
 		const user: User = {
 			uuid: uuid as string,
@@ -56,6 +47,15 @@ export async function login(token: string | null) {
 
 		// Put the user in the store
 		setUser(user);
+
+		// Put the token in the socket auth object and (re)connect
+		socket.auth = { jwt: token };
+		socket.connect();
+
+		// Setup error reporting
+		// socket.on('connect_error', (err) => {
+		// 	// console.error(err);
+		// });
 
 		// Fetch all messages from the database
 		// const defaultChatUUID = 'acdf90a0-1408-11ed-8f13-436d0cf1e378';

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { messages, setMessages, addMessage } from '../../stores/messages';
 	import type { Chat } from '../../models/chat';
 	import type { Message } from '../../models/message';
@@ -6,7 +7,7 @@
 	import MessageEl from '../../components/main/message.svelte';
 	import { beforeUpdate, afterUpdate } from 'svelte';
 
-	import socket from '../../sockets/socket';
+	import socket from '../../connections/socket';
 	import { setCurrentChat } from '../../stores/currentChat';
 	import { user } from '../../stores/user';
 
@@ -21,7 +22,13 @@
 
 		// Code to rerun when the props change
 		setMessages(chatMessages);
+
+		if (scrollDiv) scrollDiv.scrollTo(0, scrollDiv.scrollHeight);
 	}
+
+	onMount(() => {
+		scrollDiv.scrollTo(0, scrollDiv.scrollHeight);
+	});
 
 	socket.off('message');
 	socket.on('message', (message: Message) => {
