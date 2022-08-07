@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
 	import { faUser } from '@fortawesome/free-solid-svg-icons';
-	import dateToString from '../../models/dateTime';
+	import formatDate from '../../models/dateTime';
 	import type { MessageFull } from '../../models/message';
 	import { user } from '../../stores/user';
 
@@ -25,7 +25,7 @@
 			{/if}
 		</a>
 		<a href="https://www.minecraft.net/nl-nl" class="text-xl mr-4">{message.sender_name}</a>
-		<h2 class="ml-auto mr-2">{dateToString(new Date(message.sent_at))}</h2>
+		<h2 class="ml-auto mr-2">{formatDate(message.sent_at)}</h2>
 	</header>
 	<p>
 		{message.content}

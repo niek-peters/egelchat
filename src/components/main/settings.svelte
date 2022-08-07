@@ -11,7 +11,10 @@
 	{#if $user && $settingsNav}
 		{#if $settingsNav === 'My Account'}
 			<div class="flex p-8 items-center justify-center bg-gray-200/50 rounded-md">
-				<h2 class="text-4xl mr-8"><b>{$user.name}</b></h2>
+				<div class="flex flex-col items-center">
+					<h2 class="text-4xl mr-8 mb-2"><b>{$user.name}</b></h2>
+					<h4 class="text-xl mr-8">{$user.uuid}</h4>
+				</div>
 				<div
 					class="flex items-center justify-center rounded-full overflow-hidden bg-blue-300 mx-4 w-36 h-36"
 				>

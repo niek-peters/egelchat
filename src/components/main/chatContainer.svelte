@@ -35,7 +35,7 @@
 	let inputEl: HTMLInputElement;
 
 	function focusInput() {
-		inputEl.focus();
+		if (inputEl) inputEl.focus();
 	}
 
 	// Auto detect user inputs and select the text input automatically

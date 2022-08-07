@@ -1,23 +1,27 @@
-export default function dateToString(date: Date): string {
-	const now = new Date();
-	const yesterday = new Date();
-	yesterday.setDate(now.getDate() - 1);
+import moment from 'moment';
+
+export default function formatDate(dateStr: string): string {
+	const now = moment();
+	const yesterday = moment().subtract(1, 'days');
+
+	const date = moment(dateStr);
 
 	let output = '';
 
-	if (now.toDateString() === date.toDateString()) {
+	if (now.day() === date.day()) {
 		output += 'Today ';
-	} else if (now.toDateString() === yesterday.toDateString()) {
+	} else if (now.day() === yesterday.day()) {
 		output += 'Yesterday ';
 	} else {
-		output += date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear() + ' ';
+		output += date.format('D-M-YYYY');
 	}
 
-	output += 'at ' + date.getHours() + ':' + date.getMinutes().toString().padStart(2, '0');
+	output += ' at ' + date.format('HH:mm');
 
 	return output;
 }
 
 export function getMySQLDateTime(): string {
-	return new Date().toISOString().slice(0, 19).replace('T', ' ');
+	// Don't convert to UTC, because MySQL returns UTC in result by default when querying
+	return moment().format('YYYY-MM-DD HH:mm:ss');
 }
