@@ -1,6 +1,7 @@
-<script>
+<script lang="ts">
 	import Fa from 'svelte-fa';
 	import { faUser } from '@fortawesome/free-solid-svg-icons';
+	import MyAccount from '../settings/myAccount.svelte';
 
 	import { settingsNav } from '../../stores/settingsNav';
 	import { user } from '../../stores/user';
@@ -10,21 +11,7 @@
 <article class="p-4">
 	{#if $user && $settingsNav}
 		{#if $settingsNav === 'My Account'}
-			<div class="flex p-8 items-center justify-center bg-gray-200/50 rounded-md">
-				<div class="flex flex-col items-center">
-					<h2 class="text-4xl mr-8 mb-2"><b>{$user.name}</b></h2>
-					<h4 class="text-xl mr-8">{$user.uuid}</h4>
-				</div>
-				<div
-					class="flex items-center justify-center rounded-full overflow-hidden bg-blue-300 mx-4 w-36 h-36"
-				>
-					{#if $user.pf_pic}
-						<img src={$user.pf_pic} alt="pf pic" />
-					{:else}
-						<Fa icon={faUser} class="text-7xl" />
-					{/if}
-				</div>
-			</div>
+			<MyAccount user={$user} />
 		{:else if $settingsNav === 'Danger Zone'}
 			<div>
 				<h2>Username: {$user.name}</h2>

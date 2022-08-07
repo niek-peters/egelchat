@@ -1,0 +1,199 @@
+<script lang="ts">
+	import Fa from 'svelte-fa';
+	import { faUser } from '@fortawesome/free-solid-svg-icons';
+	import { browser } from '$app/env';
+	import type User from '../../models/user';
+	import { login } from '../../models/user';
+
+	export let user: User;
+
+	let usernameErr: string;
+	let passwordErr: string;
+
+	let newUsername: string;
+	let password: string;
+	let newPassword: string;
+
+	let usernameChanged: boolean = false;
+	let passwordChanged: boolean = false;
+
+	async function changeUsername() {
+		if (!browser) return;
+		try {
+			if (!newUsername) throw new Error('Please enter a new username');
+
+			let token = localStorage.getItem('auth-token');
+			if (!token || token === 'undefined')
+				throw new Error('Could not authenticate you, maybe try logging out and logging back in?');
+
+			const response = await fetch('http://127.0.0.1:3000/api/users', {
+				method: 'PUT',
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: token as string
+				},
+				body: JSON.stringify({
+					uuid: user.uuid,
+					name: newUsername
+				})
+			});
+
+			if (response.status !== 200) throw new Error(await response.text());
+
+			// Reset all inputs and errors
+			newUsername = usernameErr = '';
+
+			// Login
+			login(response.headers.get('Authorization'));
+
+			usernameErr = '';
+			usernameChanged = true;
+
+			setTimeout(() => {
+				usernameChanged = false;
+			}, 2000);
+		} catch (er) {
+			if (er instanceof Error) {
+				usernameChanged = false;
+				usernameErr = er.message;
+
+				setTimeout(() => {
+					usernameErr = '';
+				}, 2000);
+			}
+		}
+	}
+
+	async function changePassword() {
+		if (!browser) return;
+		try {
+			if (!(password && newPassword)) throw new Error('Please fill in all fields');
+
+			let token = localStorage.getItem('auth-token');
+			if (!token || token === 'undefined')
+				throw new Error('Could not authenticate you, maybe try logging out and logging back in?');
+
+			const response = await fetch('http://127.0.0.1:3000/api/users', {
+				method: 'PUT',
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: token as string
+				},
+				body: JSON.stringify({
+					uuid: user.uuid,
+					password: password,
+					new_password: newPassword
+				})
+			});
+
+			if (response.status !== 200) throw new Error(await response.text());
+
+			// Reset all inputs and errors
+			password = newPassword = passwordErr = '';
+
+			// Login
+			login(response.headers.get('Authorization'));
+
+			passwordErr = '';
+			passwordChanged = true;
+
+			setTimeout(() => {
+				passwordChanged = false;
+			}, 2000);
+		} catch (er) {
+			if (er instanceof Error) {
+				passwordChanged = false;
+				passwordErr = er.message;
+
+				setTimeout(() => {
+					passwordErr = '';
+				}, 2000);
+			}
+		}
+	}
+</script>
+
+<div class="flex p-8 items-center justify-center bg-gray-200/50 rounded-md">
+	<div class="flex flex-col items-center">
+		<h2 class="text-4xl mr-8 mb-2"><b>{user.name}</b></h2>
+		<h4 class="text-xl mr-8">{user.uuid}</h4>
+	</div>
+	<div
+		class="flex items-center justify-center rounded-full overflow-hidden bg-blue-300 mx-4 w-36 h-36"
+	>
+		{#if user.pf_pic}
+			<img src={user.pf_pic} alt="pf pic" />
+		{:else}
+			<Fa icon={faUser} class="text-7xl" />
+		{/if}
+	</div>
+</div>
+<div class="flex flex-col items-center mt-6">
+	<h2 class="text-2xl font-semibold">Edit your profile</h2>
+	<div class="flex justify-between w-4/5 mt-4">
+		<form class="flex flex-col items-center" on:submit|preventDefault={changeUsername}>
+			<h4 class="text-xl mb-4">Change username:</h4>
+			<input
+				class="p-4 text-xl rounded-md m-2 outline-none border-transparent focus:border-gray-400 border-2 transition w-72"
+				type="text"
+				placeholder="New username"
+				required
+				bind:value={newUsername}
+				minlength="3"
+				maxlength="24"
+			/>
+			<button
+				class="p-4 text-xl rounded-md m-2 text-white bg-blue-400 hover:bg-blue-500 transition w-72"
+				>Submit</button
+			>
+			{#if usernameErr}
+				<p
+					class="flex justify-center p-4 text-xl rounded-md m-2 bg-red-400 border-red-500 border-2 w-72"
+				>
+					{usernameErr}
+				</p>
+			{:else if usernameChanged}
+				<p
+					class="flex justify-center p-4 text-xl rounded-md m-2 bg-green-400 border-green-500 border-2 w-72"
+				>
+					Username changed!
+				</p>
+			{/if}
+		</form>
+		<form class="flex flex-col items-center" on:submit|preventDefault={changePassword}>
+			<h4 class="text-xl mb-4">Change password:</h4>
+			<input
+				class="p-4 text-xl rounded-md m-2 outline-none border-transparent focus:border-gray-400 border-2 transition w-72"
+				type="password"
+				placeholder="Password"
+				required
+				bind:value={password}
+				minlength="3"
+				maxlength="255"
+			/><input
+				class="p-4 text-xl rounded-md m-2 outline-none border-transparent focus:border-gray-400 border-2 transition w-72"
+				type="password"
+				placeholder="New password"
+				required
+				bind:value={newPassword}
+				minlength="3"
+				maxlength="255"
+			/>
+			<button
+				class="flex justify-center p-4 text-xl rounded-md m-2 text-white bg-blue-400 hover:bg-blue-500 transition w-72"
+				>Submit</button
+			>
+			{#if passwordErr}
+				<p class="p-4 text-xl rounded-md m-2 bg-red-400 border-red-500 border-2 w-72">
+					{passwordErr}
+				</p>
+			{:else if passwordChanged}
+				<p
+					class="flex justify-center p-4 text-xl rounded-md m-2 bg-green-400 border-green-500 border-2 w-72"
+				>
+					Password changed!
+				</p>
+			{/if}
+		</form>
+	</div>
+</div>

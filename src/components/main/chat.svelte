@@ -15,7 +15,6 @@
 	export let chatMessages: Message[];
 
 	$: {
-		console.log(chat);
 		setCurrentChat(chat);
 
 		socket.emit('chat_join', chat.uuid);

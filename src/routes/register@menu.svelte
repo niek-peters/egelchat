@@ -51,7 +51,7 @@
 		bind:value={username}
 		required
 		minlength="3"
-		maxlength="255"
+		maxlength="24"
 	/>
 	<input
 		class="p-4 text-xl rounded-md m-2 outline-none border-transparent focus:border-gray-400 border-2 transition w-72"
