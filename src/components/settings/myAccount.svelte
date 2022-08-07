@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
-	import { faUser } from '@fortawesome/free-solid-svg-icons';
+	import { faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 	import { browser } from '$app/env';
 	import type User from '../../models/user';
 	import { login } from '../../models/user';
@@ -9,13 +9,16 @@
 
 	let usernameErr: string;
 	let passwordErr: string;
+	let pfPicErr: string;
 
 	let newUsername: string;
 	let password: string;
 	let newPassword: string;
+	let pfPicUrl: string;
 
 	let usernameChanged: boolean = false;
 	let passwordChanged: boolean = false;
+	let pfPicChanged: boolean = false;
 
 	async function changeUsername() {
 		if (!browser) return;
@@ -111,25 +114,97 @@
 			}
 		}
 	}
+
+	async function changePfPic() {
+		if (!browser) return;
+		try {
+			if (!pfPicUrl) throw new Error('Please choose a new profile picture');
+
+			let token = localStorage.getItem('auth-token');
+			if (!token || token === 'undefined')
+				throw new Error('Could not authenticate you, maybe try logging out and logging back in?');
+
+			// TO DO: Create new API route that handles profile picture uploads
+
+			return alert(pfPicUrl);
+
+			// if (response.status !== 200) throw new Error(await response.text());
+
+			// // Reset all inputs and errors
+			// pfPicUrl = pfPicErr = '';
+
+			// // Login
+			// login(response.headers.get('Authorization'));
+
+			// pfPicErr = '';
+			// pfPicChanged = true;
+
+			// setTimeout(() => {
+			// 	pfPicChanged = false;
+			// }, 2000);
+		} catch (er) {
+			if (er instanceof Error) {
+				pfPicChanged = false;
+				pfPicErr = er.message;
+
+				setTimeout(() => {
+					pfPicErr = '';
+				}, 2000);
+			}
+		}
+	}
+
+	function updateImgPreview() {
+		if (!pfPicInput.files) return;
+		pfPicUrl = URL.createObjectURL(pfPicInput.files[0]);
+		user.pf_pic = pfPicUrl;
+	}
+
+	let pfPicInput: HTMLInputElement;
 </script>
 
-<div class="flex p-8 items-center justify-center bg-gray-200/50 rounded-md">
+<form
+	class="flex p-8 items-center justify-center bg-gray-200/50 rounded-md"
+	on:submit|preventDefault={changePfPic}
+>
 	<div class="flex flex-col items-center">
 		<h2 class="text-4xl mr-8 mb-2"><b>{user.name}</b></h2>
 		<h4 class="text-xl mr-8">{user.uuid}</h4>
 	</div>
-	<div
-		class="flex items-center justify-center rounded-full overflow-hidden bg-blue-300 mx-4 w-36 h-36"
+	<button
+		type="button"
+		class={`flex outline-none items-center justify-center relative rounded-full bg-blue-300 ${
+			user.pf_pic ? '' : 'hover:bg-blue-400'
+		} mx-4 w-36 h-36 transition`}
+		on:click={() => pfPicInput.click()}
 	>
+		<input
+			class="hidden"
+			type="file"
+			accept=".jpg, .jpeg, .png"
+			bind:this={pfPicInput}
+			on:change={updateImgPreview}
+		/>
 		{#if user.pf_pic}
-			<img src={user.pf_pic} alt="pf pic" />
+			<img
+				src={user.pf_pic}
+				alt="pf pic"
+				class="rounded-full overflow-hidden w-36 h-36 object-cover"
+			/>
 		{:else}
-			<Fa icon={faUser} class="text-7xl" />
+			<Fa icon={faPlus} class="text-7xl" />
 		{/if}
-	</div>
-</div>
+
+		<button
+			class={`flex outline-none items-center justify-center absolute top-24 left-24 p-2 text-md rounded-full m-2 text-white bg-green-400 hover:bg-green-500 w-12 h-12 transition ${
+				user.pf_pic ? 'opacity-100' : 'opacity-0'
+			}`}
+			on:click|stopPropagation><Fa icon={faCheck} class="text-3xl" /></button
+		>
+	</button>
+</form>
 <div class="flex flex-col items-center mt-6">
-	<h2 class="text-2xl font-semibold">Edit your profile</h2>
+	<h2 class="text-3xl font-semibold">Edit my profile</h2>
 	<div class="flex justify-between w-4/5 mt-4">
 		<form class="flex flex-col items-center" on:submit|preventDefault={changeUsername}>
 			<h4 class="text-xl mb-4">Change username:</h4>

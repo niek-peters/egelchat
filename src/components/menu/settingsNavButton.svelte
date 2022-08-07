@@ -18,5 +18,9 @@
 >
 	<Fa {icon} class="text-lg ml-4" />
 	<p class="m-2">{text}</p>
-	<div class={`h-full w-4 ml-auto ${$settingsNav && text === $settingsNav ? 'bg-blue-400' : ''}`} />
+	<div
+		class={`h-full w-4 ml-auto rounded-sm ${
+			$settingsNav && text === $settingsNav ? 'bg-blue-400' : ''
+		}`}
+	/>
 </button>

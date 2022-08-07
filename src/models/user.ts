@@ -64,7 +64,7 @@ export function logout() {
 	try {
 		if (!browser) return;
 
-		localStorage.setItem('auth-token', 'undefined');
+		localStorage.removeItem('auth-token');
 
 		// Reset the user store
 		resetUser();

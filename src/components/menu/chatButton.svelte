@@ -10,7 +10,7 @@
 >
 	<p class="m-2">{chat.name}</p>
 	<div
-		class={`h-full w-4 ml-auto ${
+		class={`h-full w-4 ml-auto rounded-sm ${
 			$currentChat && chat.uuid == $currentChat.uuid ? 'bg-blue-400' : ''
 		}`}
 	/>
