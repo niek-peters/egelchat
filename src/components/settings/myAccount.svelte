@@ -142,7 +142,8 @@
 		} catch (er) {
 			if (er instanceof Error) {
 				// Find the message in the html (I know it's stupid)
-				pfPicErr = betweenMarkers(er.message, '<pre>Error: ', '<br>');
+				if (er.message.includes('<')) pfPicErr = betweenMarkers(er.message, '<pre>Error: ', '<br>');
+				else pfPicErr = er.message;
 
 				setTimeout(() => {
 					pfPicErr = '';
