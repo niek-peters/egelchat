@@ -124,8 +124,6 @@
 			const formData = new FormData();
 			formData.append('pf_pic', pfPicInput.files[0]);
 
-			console.log(formData);
-
 			const response = await fetch('http://127.0.0.1:3000/api/images', {
 				method: 'PUT',
 				headers: {
@@ -143,8 +141,8 @@
 			login(response.headers.get('Authorization'));
 		} catch (er) {
 			if (er instanceof Error) {
-				console.error(er.message);
-				pfPicErr = er.message;
+				// Find the message in the html (I know it's stupid)
+				pfPicErr = betweenMarkers(er.message, '<pre>Error: ', '<br>');
 
 				setTimeout(() => {
 					pfPicErr = '';
@@ -153,8 +151,22 @@
 		}
 	}
 
+	function betweenMarkers(text: string, begin: string, end: string): string {
+		var firstChar = text.indexOf(begin) + begin.length;
+		var lastChar = text.indexOf(end);
+		var newText = text.substring(firstChar, lastChar);
+		return newText;
+	}
+
 	function updateImgPreview() {
 		if (!pfPicInput.files) return;
+
+		const acceptedImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+		if (!acceptedImageTypes.includes(pfPicInput.files[0].type)) {
+			pfPicUrl = 'https://static.thenounproject.com/png/586340-200.png';
+			return;
+		}
+
 		pfPicUrl = URL.createObjectURL(pfPicInput.files[0]);
 	}
 
@@ -184,7 +196,13 @@
 			bind:this={pfPicInput}
 			on:change={updateImgPreview}
 		/>
-		{#if pfPicUrl}
+		{#if pfPicErr}
+			<p
+				class="flex items-center justify-center p-4 rounded-full overflow-hidden w-36 h-36 bg-red-400 border-red-500 border-2 text-lg"
+			>
+				{pfPicErr}
+			</p>
+		{:else if pfPicUrl}
 			<img
 				src={pfPicUrl}
 				alt="pf pic"
