@@ -18,7 +18,6 @@
 
 	let usernameChanged: boolean = false;
 	let passwordChanged: boolean = false;
-	let pfPicChanged: boolean = false;
 
 	async function changeUsername() {
 		if (!browser) return;
@@ -49,7 +48,6 @@
 			// Login
 			login(response.headers.get('Authorization'));
 
-			usernameErr = '';
 			usernameChanged = true;
 
 			setTimeout(() => {
@@ -97,7 +95,6 @@
 			// Login
 			login(response.headers.get('Authorization'));
 
-			passwordErr = '';
 			passwordChanged = true;
 
 			setTimeout(() => {
@@ -118,33 +115,35 @@
 	async function changePfPic() {
 		if (!browser) return;
 		try {
-			if (!pfPicUrl) throw new Error('Please choose a new profile picture');
+			if (!pfPicInput.files) throw new Error('Please choose a new profile picture');
 
 			let token = localStorage.getItem('auth-token');
 			if (!token || token === 'undefined')
 				throw new Error('Could not authenticate you, maybe try logging out and logging back in?');
 
-			// TO DO: Create new API route that handles profile picture uploads
+			const formData = new FormData();
+			formData.append('pf_pic', pfPicInput.files[0]);
 
-			return alert(pfPicUrl);
+			console.log(formData);
 
-			// if (response.status !== 200) throw new Error(await response.text());
+			const response = await fetch('http://127.0.0.1:3000/api/images', {
+				method: 'PUT',
+				headers: {
+					Authorization: token as string
+				},
+				body: formData
+			});
 
-			// // Reset all inputs and errors
-			// pfPicUrl = pfPicErr = '';
+			if (response.status !== 200) throw new Error(await response.text());
 
-			// // Login
-			// login(response.headers.get('Authorization'));
+			// Reset all inputs and errors
+			pfPicUrl = pfPicErr = '';
 
-			// pfPicErr = '';
-			// pfPicChanged = true;
-
-			// setTimeout(() => {
-			// 	pfPicChanged = false;
-			// }, 2000);
+			// Login
+			login(response.headers.get('Authorization'));
 		} catch (er) {
 			if (er instanceof Error) {
-				pfPicChanged = false;
+				console.error(er.message);
 				pfPicErr = er.message;
 
 				setTimeout(() => {
@@ -157,7 +156,6 @@
 	function updateImgPreview() {
 		if (!pfPicInput.files) return;
 		pfPicUrl = URL.createObjectURL(pfPicInput.files[0]);
-		user.pf_pic = pfPicUrl;
 	}
 
 	let pfPicInput: HTMLInputElement;
@@ -166,6 +164,7 @@
 <form
 	class="flex p-8 items-center justify-center bg-gray-200/50 rounded-md"
 	on:submit|preventDefault={changePfPic}
+	enctype="multipart/form-data"
 >
 	<div class="flex flex-col items-center">
 		<h2 class="text-4xl mr-8 mb-2"><b>{user.name}</b></h2>
@@ -174,7 +173,7 @@
 	<button
 		type="button"
 		class={`flex outline-none items-center justify-center relative rounded-full bg-blue-300 ${
-			user.pf_pic ? '' : 'hover:bg-blue-400'
+			pfPicUrl ? '' : 'hover:bg-blue-400'
 		} mx-4 w-36 h-36 transition`}
 		on:click={() => pfPicInput.click()}
 	>
@@ -185,7 +184,13 @@
 			bind:this={pfPicInput}
 			on:change={updateImgPreview}
 		/>
-		{#if user.pf_pic}
+		{#if pfPicUrl}
+			<img
+				src={pfPicUrl}
+				alt="pf pic"
+				class="rounded-full overflow-hidden w-36 h-36 object-cover"
+			/>
+		{:else if user.pf_pic}
 			<img
 				src={user.pf_pic}
 				alt="pf pic"
@@ -197,7 +202,7 @@
 
 		<button
 			class={`flex outline-none items-center justify-center absolute top-24 left-24 p-2 text-md rounded-full m-2 text-white bg-green-400 hover:bg-green-500 w-12 h-12 transition ${
-				user.pf_pic ? 'opacity-100' : 'opacity-0'
+				pfPicUrl ? 'opacity-100' : 'opacity-0'
 			}`}
 			on:click|stopPropagation><Fa icon={faCheck} class="text-3xl" /></button
 		>
